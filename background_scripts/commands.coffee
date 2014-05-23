@@ -102,7 +102,7 @@ Commands =
       ["nextTab", "previousTab", "firstTab", "lastTab", "createTab", "duplicateTab", "removeTab",
        "restoreTab", "moveTabToNewWindow", "togglePinTab", "moveTabLeft", "moveTabRight"]
     misc:
-      ["showHelp"]
+      ["LinkHints.activeModeToSaveWithQueue", "LinkHints.activateModeToSaveFile", "showHelp"]
 
   # Rarely used commands are not shown by default in the help dialog or in the README. The goal is to present
   # a focused, high-signal set of commands to the new and casual user. Only those truly hungry for more power
@@ -164,6 +164,8 @@ defaultKeyMappings =
   "g0": "firstTab"
   "g$": "lastTab"
 
+  "w": "LinkHints.activateModeToSaveFile"
+  "<a-w>": "LinkHints.activeModeToSaveWithQueue"
   "W": "moveTabToNewWindow"
   "t": "createTab"
   "yt": "duplicateTab"
@@ -223,6 +225,9 @@ commandDescriptions =
   "LinkHints.activateModeWithQueue": ["Open multiple links in a new tab"]
 
   "LinkHints.activateModeToOpenIncognito": ["Open a link in incognito window"]
+
+  "LinkHints.activateModeToSaveFile": ["Save linked file"]
+  "LinkHints.activeModeToSaveWithQueue": ["Save multiple files"]
 
   enterFindMode: ["Enter find mode"]
   performFind: ["Cycle forward to the next find match"]

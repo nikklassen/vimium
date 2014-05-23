@@ -167,6 +167,9 @@ openUrlInNewTab = (request) ->
 openUrlInIncognito = (request) ->
   chrome.windows.create({ url: Utils.convertToUrl(request.url), incognito: true})
 
+saveLinkedFile = (request) ->
+  chrome.downloads.download({ url: Utils.convertToUrl(request.url) })
+
 #
 # Called when the user has clicked the close icon on the "Vimium has been updated" message.
 # We should now dismiss that message in all tabs.
@@ -575,6 +578,7 @@ sendRequestHandlers =
   openUrlInNewTab: openUrlInNewTab,
   openUrlInIncognito: openUrlInIncognito,
   openUrlInCurrentTab: openUrlInCurrentTab,
+  saveLinkedFile: saveLinkedFile,
   openOptionsPageInNewTab: openOptionsPageInNewTab,
   registerFrame: registerFrame,
   frameFocused: handleFrameFocused,

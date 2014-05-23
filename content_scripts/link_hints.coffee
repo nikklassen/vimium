@@ -14,6 +14,8 @@ OPEN_IN_NEW_FG_TAB = {}
 OPEN_WITH_QUEUE = {}
 COPY_LINK_URL = {}
 OPEN_INCOGNITO = {}
+SAVE_LINK = {}
+SAVE_LINK_WITH_QUEUE = {}
 
 LinkHints =
   hintMarkerContainingDiv: null
@@ -52,6 +54,8 @@ LinkHints =
   activateModeToCopyLinkUrl: -> @activateMode(COPY_LINK_URL)
   activateModeWithQueue: -> @activateMode(OPEN_WITH_QUEUE)
   activateModeToOpenIncognito: -> @activateMode(OPEN_INCOGNITO)
+  activateModeToSaveFile: -> @activateMode(SAVE_LINK)
+  activeModeToSaveWithQueue: -> @activateMode(SAVE_LINK_WITH_QUEUE)
 
   activateMode: (mode = OPEN_IN_CURRENT_TAB) ->
     # we need documentElement to be ready in order to append links
@@ -104,6 +108,16 @@ LinkHints =
       @linkActivator = (link) ->
         chrome.runtime.sendMessage(
           handler: 'openUrlInIncognito'
+          url: link.href)
+    else if @mode is SAVE_LINK or @mode is SAVE_LINK_WITH_QUEUE
+      if @mode is SAVE_LINK
+        HUD.show("Save linked file")
+      else
+        HUD.show("Save multiple files")
+
+      @linkActivator = (link) ->
+        chrome.runtime.sendMessage(
+          handler: 'saveLinkedFile'
           url: link.href)
     else # OPEN_IN_CURRENT_TAB
       HUD.show("Open link in current tab")
@@ -216,10 +230,13 @@ LinkHints =
         clickEl.focus()
       DomUtils.flashRect(matchedLink.rect)
       @linkActivator(clickEl)
-      if @mode is OPEN_WITH_QUEUE
+      if @mode is OPEN_WITH_QUEUE or @mode is SAVE_LINK_WITH_QUEUE
         @deactivateMode delay, ->
           LinkHints.delayMode = false
-          LinkHints.activateModeWithQueue()
+          if @mode is OPEN_WITH_QUEUE
+            LinkHints.activateModeWithQueue()
+          else
+            LinkHints.activeModeToSaveWithQueue()
       else
         @deactivateMode(delay, -> LinkHints.delayMode = false)
 
